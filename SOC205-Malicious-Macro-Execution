@@ -1,0 +1,56 @@
+Incident Response Report: SOC205 - Malicious Macro Execution
+
+1. Incident Overview
+Alert Rule: SOC205 - Malicious Macro has been executed
+Event ID: 231
+Severity: Medium
+Target Hostname: Jayne
+Host IP Address: 172.16.17.198
+Date and Time: 2024-02-28 08:42:02 (+03:00)
+Investigation Verdict: True Positive
+2. Threat and Artifact Details
+Malicious File: edit1-invoice.docm
+File Location: C:\Users\LetsDefend\Downloads\edit1-invoice.docm
+SHA-256 Hash: 1a819d18c9a9de4f81829c4cd55a17f767443c22f9b30ca953866827e5d96fb0
+AV or EDR Status: Detected (Not Quarantined)
+Identified C2 Server: 92.204.221.16:80
+3. MITRE ATT&CK Mapping
+Tactic: Initial Access
+Technique ID: T1566.001
+Technique Name: Spearphishing Attachment
+Observation: Malicious document delivered as an invoice attachment
+
+Tactic: Execution
+Technique ID: T1204.002
+Technique Name: User Execution: Malicious File
+Observation: Target user opened the file and allowed macro execution
+
+Tactic: Execution
+Technique ID: T1059.005
+Technique Name: Visual Basic for Applications
+Observation: Macro executed embedded VBA script
+
+Tactic: Execution
+Technique ID: T1059.001
+Technique Name: PowerShell
+Observation: Macro spawned powershell.exe to execute commands
+
+Tactic: Command and Control
+Technique ID: T1071.001
+Technique Name: Web Protocols
+Observation: PowerShell initiated outbound HTTP connection to port 80
+
+4. Investigation and Evidence Analysis
+EDR Triage:
+The alert indicated that edit1-invoice.docm was flagged by endpoint defenses upon download, but containment or quarantine was not automatically enforced.
+
+Log Correlation (Log Management and Sysmon):
+Sysmon Event ID 4688 and 4104: Confirmed that powershell.exe was created and executed script blocks remotely at 2024-02-28 11:12:25.
+Proxy Log: At 2024-02-28 11:12:49, an outbound HTTP request was initiated by powershell.exe from 172.16.17.198:49212 to 92.204.221.16:80.
+Firewall Log: Verified active outbound network traffic to the external destination IP 92.204.221.16.
+
+5. Containment and Remediation Actions
+6. Endpoint Isolation: Network isolation applied to host Jayne (172.16.17.198) via EDR console to prevent lateral movement.
+7. Threat Eradication: Quarantined and permanently removed edit1-invoice.docm; terminated active PowerShell processes spawned by the document.
+8. Network Defenses: Blocklisted C2 IP 92.204.221.16 at firewall and proxy levels.
+9. Endpoint Posture: Executed a full offline EDR malware scan and scheduled security awareness training regarding phishing document attachments.
