@@ -46,4 +46,23 @@ An unauthorized cloud region access alert was triggered on the SIEM platform und
 
 ### 2. Threat Intelligence Verification
 - Checked public reputation registries (VirusTotal, AbuseIPDB) for source IP `134.209.145.73`[cite: 11, 12].
-- The IP carried multiple historical flags for automated credential brute-force, SSH
+- The IP carried multiple historical flags for automated credential brute-force, SSH probes, and malicious web application scans[cite: 11, 12].
+
+### 3. Scope Analysis
+- Queried SIEM log repository for `134.209.145.73` across all network telemetry[cite: 12].
+- Target traffic remained strictly confined to `52.15.206.21`[cite: 12].
+- No lateral movement, internal network reconnaissance, or multi-host scanning was observed[cite: 12].
+- **Scope Broadened:** No[cite: 12].
+
+### 4. Containment Assessment
+- Inspected the firewall transaction log and web server return codes[cite: 14].
+- Perimeter control explicitly returned `Device Action: Blocked` with HTTP response status 403[cite: 14].
+- Host containment/isolation was unnecessary due to zero initial execution inside the OS boundary[cite: 11].
+- **Host Isolation:** No[cite: 11].
+
+---
+
+## Lessons Learned & Key Takeaways
+1. **Device Isolation Trigger:** An alert marked as `Blocked` indicates perimeter prevention succeeded; isolating production servers in such cases causes unnecessary service downtime[cite: 11, 14].
+2. **OS Verification:** Never infer OS purely from attack URI paths; verify via registered endpoint asset logs[cite: 13].
+3. **Regional Ingress Auditing:** Blocking unauthorized cloud regions reduces exposure to widespread automated bot scans.
