@@ -1,0 +1,49 @@
+# Incident Report: SOC325 - Unauthorized Cloud Region Access Attempt Detected
+
+## Executive Summary
+An unauthorized cloud region access alert was triggered on the SIEM platform under Event ID 303[cite: 11]. Analysis revealed an external actor attempting an automated web brute-force login attack from an unapproved geographic region[cite: 12, 14]. Perimeter defenses successfully blocked the inbound requests (HTTP 403)[cite: 14]. No internal compromise or lateral spread was detected; the incident was closed as **True Positive**[cite: 11, 12].
+
+---
+
+## Alert Metadata
+| Parameter | Value |
+| :--- | :--- |
+| **Platform** | LetsDefend[cite: 11] |
+| **Event ID** | 303[cite: 11] |
+| **Rule Name** | SOC325 - Unauthorized Cloud Region Access Attempt Detected[cite: 11] |
+| **Event Time** | 2024-09-24T08:21:15+03:00[cite: 11] |
+| **Severity** | Low[cite: 11] |
+| **Incident Type** | Web Attack[cite: 11] |
+| **Analysis Verdict** | True Positive[cite: 11] |
+
+---
+
+## Indicators of Compromise (IOCs)
+- **Source Address (Attacker):** `134.209.145.73`[cite: 14]
+- **Target Address (Internal Server):** `52.15.206.21`[cite: 14]
+- **Target OS:** Ubuntu Linux 20.04.02 LTS[cite: 13]
+- **Target Account:** `test@letsdefend.io`[cite: 14]
+- **HTTP Request Method:** `POST /accounts/login HTTP/1.1`[cite: 14]
+- **Perimeter Action:** Blocked (`HTTP 403 Forbidden`)[cite: 14]
+
+---
+
+## MITRE ATT&CK Framework Mapping
+- **Tactic:** Defense Evasion (TA0005)
+- **Technique:** Unused/Unsupported Cloud Regions (`T1535`)[cite: 12, 14]
+- **Associated IDs:** 
+  - `T1078` – Valid Accounts[cite: 14]
+  - `T1133` – External Remote Services[cite: 14]
+  - `T1586` – Compromise Accounts[cite: 14]
+
+---
+
+## Step-by-Step SOC Investigation
+
+### 1. Endpoint & System Identification
+- Cross-referenced the target IP `52.15.206.21` inside **Endpoint Security**[cite: 13].
+- Verified host operating system: **Linux (`Ubuntu 20.04.02`)**[cite: 13].
+
+### 2. Threat Intelligence Verification
+- Checked public reputation registries (VirusTotal, AbuseIPDB) for source IP `134.209.145.73`[cite: 11, 12].
+- The IP carried multiple historical flags for automated credential brute-force, SSH
