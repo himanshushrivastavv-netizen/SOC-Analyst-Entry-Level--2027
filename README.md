@@ -6,10 +6,6 @@ Welcome to my Security Operations Center (SOC) investigation portfolio. This rep
 
 | Incident ID | Alert Name | Severity | Verdict | Writeup Link |
 | :--- | :--- | :--- | :--- | :--- |
-| **SOC205** | Malicious Macro Execution | Medium | True Positive | [View Report](./SOC205-Malicious-Macro-Execution) |
-
-| Incident ID | Alert Name | Severity | Verdict | Writeup Link |
-| :--- | :--- | :--- | :--- | :--- |
 | SOC205 | Malicious Macro Execution | Medium | True Positive | [View Report](./SOC205-Malicious-Macro-Execution) |
 | SOC325 | Unauthorized Cloud Region Access Attempt Detected | Low | True Positive | [View Report](./Lab%202) |
 
