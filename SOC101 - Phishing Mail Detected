@@ -1,0 +1,70 @@
+# Incident Response Report: SOC101 - Phishing Mail Detected
+
+## 1. Incident Overview
+* **Alert Rule:** SOC101 - Phishing Mail Detected
+* **Event ID:** 87
+* **Platform / Source:** LetsDefend (Exchange Gateway)
+* **Severity:** Medium
+* **Date & Time:** 2021-04-04 23:00:15 (+03:00)
+* **Role / Difficulty:** Security Analyst / Beginner
+* **Investigation Verdict:** True Positive (Malicious Delivery, User Opened)
+
+---
+
+## 2. Threat & Artifact Summary
+
+| Parameter | Details |
+| :--- | :--- |
+| **Recipient (Target User)** | `mark@letsdefend.io` |
+| **Sender Address** | `lethuyan852@gmail.com` (external free Gmail account) |
+| **Sender SMTP IP** | `146.56.195.192` |
+| **Email Subject** | "Its a Must have for your Phone" |
+| **Gateway Action** | Allowed (delivered to the mailbox) |
+| **Mail Delivered to User?** | Yes |
+| **Attachment / URL in Mail?** | Yes |
+| **Attachment / URL Analysis** | Malicious |
+| **User Interaction** | Opened |
+
+---
+
+## 3. MITRE ATT&CK Mapping
+
+* **T1566 - Phishing**
+  * The email reached the employee's inbox from an external sender. The exact sub-technique depends on the payload: T1566.001 (attachment) or T1566.002 (link).
+* **T1204 - User Execution**
+  * The user opened the malicious file/URL, so the attack depended on user action.
+
+---
+
+## 4. Triage & Investigation Analysis
+
+* **Alert review:** The mail came from a free Gmail address (not a company domain), had a generic clickbait subject, and arrived at 23:00, outside normal business hours.
+* **Delivery check:** Device Action was **Allowed**, so the gateway did not block the mail and it reached the inbox.
+* **Attachment / URL analysis:** The mail contained an attachment/URL, and analysis (reputation checks of the IP, URL, or file hash) showed it as **malicious**.
+* **User interaction check:** The playbook answer was **Opened**, so the user interacted with the malicious content. Alert closure alone was not enough; the affected endpoint needed investigation.
+
+---
+
+## 5. Containment, Eradication & Remediation
+
+1. **Isolate the endpoint** of `mark@letsdefend.io` since the user opened the malicious content.
+2. **Delete the mail** from the user's mailbox and from any other mailbox that received it (search by sender and subject).
+3. **Block** the sender `lethuyan852@gmail.com`, the SMTP IP `146.56.195.192`, and the malicious URL/domain/hash at the gateway and perimeter.
+4. **Reset the user's credentials** and review the account for suspicious logins.
+5. **Check for lateral movement** and persistence on the endpoint (new processes, outbound connections, scheduled tasks).
+
+---
+
+## 6. Analyst Note
+Verdict: True Positive. A phishing mail from an external Gmail account was delivered to `mark@letsdefend.io` (Device Action: Allowed). The attachment/URL was analyzed and found malicious, and the user opened it. The endpoint should be contained and credentials reset.
+
+---
+
+## 7. What I Learned
+1. **True Positive vs False Positive:** Positive/Negative means whether an alert fired. True/False means whether the alert was correct. If the content is malicious, the alert is a True Positive, even if the user did nothing harmful.
+2. **Device Action matters:** "Allowed" means the mail reached the inbox, so the next question is whether the user interacted with it.
+3. **Playbook order:** Check for an attachment/URL, analyze it, check delivery, then check whether the user opened it.
+4. **Phishing indicators:** External free-mail sender, generic or clickbait subject, odd sending time, and a mismatched sender domain.
+5. **Verdict consistency:** The final verdict must match the playbook evidence. Marking a malicious, opened mail as False Positive would close the alert and miss a real attack.
+6. **Analyst Note:** Always write the findings and actions taken in the note; closing a case with an empty note is not acceptable in a real SOC.
+7. **Useful tools:** VirusTotal, AbuseIPDB, and URLScan for IP, URL, and hash reputation; sandboxes for attachments (never open them on your own system).
