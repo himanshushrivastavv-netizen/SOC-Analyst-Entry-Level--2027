@@ -9,6 +9,8 @@ Welcome to my Security Operations Center (SOC) investigation portfolio. This rep
 | SOC143 | Password Stealer Detected | Medium | True Positive | [View Report](./SOC143%20-%20Password%20Stealer%20Detected) |
 | SOC205 | Malicious Macro Execution | Medium | True Positive | [View Report](./SOC205-Malicious-Macro-Execution) |
 | SOC325 | Unauthorized Cloud Region Access Attempt Detected | Low | True Positive | [View Report](./Lab%202) |
+| SOC101 | Phishing Mail Detected | Medium | False Positive | [View Report](./SOC101-Phishing-Mail-Detected) |
+
 
 ---
 
